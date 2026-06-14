@@ -166,9 +166,54 @@ func WaitForDeployReady(name, namespace string, timeout time.Duration) error {
 }
 
 // RolloutStatus waits for a rollout to complete.
-func RolloutStatus(resource, name string) error {
-	_, err := run("rollout", "status", resource, name)
+// Pass namespace via flags: RolloutStatus("deployment", "nginx", "-n", "playground")
+func RolloutStatus(resource, name string, flags ...string) error {
+	args := append([]string{"rollout", "status", resource, name}, flags...)
+	_, err := run(args...)
 	return err
+}
+
+// RolloutHistory returns the rollout history for a resource.
+func RolloutHistory(resource, name string, flags ...string) (string, error) {
+	all := append([]string{"rollout", "history", resource, name}, flags...)
+	return run(all...)
+}
+
+// RolloutUndo rolls back a resource to the previous revision.
+func RolloutUndo(resource, name string, flags ...string) (string, error) {
+	all := append([]string{"rollout", "undo", resource, name}, flags...)
+	return run(all...)
+}
+
+// SetImage updates the container image for a resource.
+func SetImage(resource, containerImage, namespace string) (string, error) {
+	args := []string{"set", "image", resource, containerImage}
+	if namespace != "" {
+		args = append(args, "-n", namespace)
+	}
+	return run(args...)
+}
+
+// Patch updates a resource using a JSON or strategic merge patch.
+func Patch(resource, name, patch, namespace string) (string, error) {
+	args := []string{"patch", resource, name, "-p", patch}
+	if namespace != "" {
+		args = append(args, "-n", namespace)
+	}
+	return run(args...)
+}
+
+// GetFirstPodName returns the name of the first pod matching a label selector.
+func GetFirstPodName(label, namespace string) (string, error) {
+	args := []string{"get", "pods", "-l", label, "-o", "jsonpath={.items[0].metadata.name}"}
+	if namespace != "" {
+		args = append(args, "-n", namespace)
+	}
+	out, err := run(args...)
+	if err != nil {
+		return "", err
+	}
+	return strings.TrimSpace(out), nil
 }
 
 // CreateNamespace creates a new namespace.
