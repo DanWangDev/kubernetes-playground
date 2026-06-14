@@ -1,0 +1,14 @@
+Thank you for installing {{ .Chart.Name }}!
+
+Your release is named {{ .Release.Name }}.
+
+To learn more about the release, try:
+  $ helm status {{ .Release.Name }}
+  $ helm get all {{ .Release.Name }}
+
+The application is running at:
+  {{- if .Values.ingress.enabled }}
+  http://{{ .Values.ingress.host }}
+  {{- else }}
+  Within the cluster: {{ include "myapp.fullname" . }}.playground.svc.cluster.local:{{ .Values.service.port }}
+  {{- end }}
