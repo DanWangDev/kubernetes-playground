@@ -1,0 +1,37 @@
+# Deployment with explicit RollingUpdate parameters.
+# maxSurge=1: at most 1 extra pod above desired count during update
+# maxUnavailable=1: at most 1 pod can be unavailable during update
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-tuned
+  namespace: playground
+  labels:
+    app: nginx-tuned
+spec:
+  replicas: 4
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  selector:
+    matchLabels:
+      app: nginx-tuned
+  template:
+    metadata:
+      labels:
+        app: nginx-tuned
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:alpine
+        ports:
+        - containerPort: 80
+        resources:
+          requests:
+            cpu: 50m
+            memory: 64Mi
+          limits:
+            cpu: 200m
+            memory: 128Mi
