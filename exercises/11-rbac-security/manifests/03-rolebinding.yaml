@@ -1,0 +1,14 @@
+# Binds the pod-reader Role to the app-sa ServiceAccount.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: app-sa-pod-reader
+  namespace: playground
+subjects:
+- kind: ServiceAccount
+  name: app-sa
+  namespace: playground
+roleRef:
+  kind: Role
+  name: pod-reader
+  apiGroup: rbac.authorization.k8s.io

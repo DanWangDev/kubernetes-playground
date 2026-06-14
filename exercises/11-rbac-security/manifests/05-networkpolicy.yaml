@@ -1,0 +1,15 @@
+# NetworkPolicy: deny all ingress to pods labeled app=secure.
+# Requires a CNI that supports NetworkPolicy (not kind's default).
+# On kind, this manifest can be applied but won't be enforced.
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: deny-ingress
+  namespace: playground
+spec:
+  podSelector:
+    matchLabels:
+      app: secure
+  policyTypes:
+  - Ingress
+  # No ingress rules = deny all incoming traffic
