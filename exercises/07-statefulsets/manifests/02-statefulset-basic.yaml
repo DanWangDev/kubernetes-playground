@@ -1,0 +1,24 @@
+# Basic StatefulSet: 3 replicas with sequential pod creation.
+# Pods are named nginx-sts-0, nginx-sts-1, nginx-sts-2.
+# serviceName must match the headless Service.
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: nginx-sts
+  namespace: playground
+spec:
+  serviceName: nginx-sts-svc
+  replicas: 3
+  selector:
+    matchLabels:
+      app: nginx-sts
+  template:
+    metadata:
+      labels:
+        app: nginx-sts
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:alpine
+        ports:
+        - containerPort: 80

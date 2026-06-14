@@ -1,0 +1,25 @@
+# Demonstrates StatefulSet scaling behavior.
+# Scale up: pod-0 → pod-1 → pod-2 (sequential)
+# Scale down: pod-2 → pod-1 → pod-0 (reverse)
+# Apply after 02-statefulset-basic.yaml to see the scaling pattern.
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: nginx-sts-scale
+  namespace: playground
+spec:
+  serviceName: nginx-sts-svc
+  replicas: 4
+  selector:
+    matchLabels:
+      app: nginx-sts-scale
+  template:
+    metadata:
+      labels:
+        app: nginx-sts-scale
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:alpine
+        ports:
+        - containerPort: 80
