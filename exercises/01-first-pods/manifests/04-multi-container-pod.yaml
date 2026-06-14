@@ -1,0 +1,28 @@
+# Multi-container Pod: nginx + busybox sidecar.
+# Both containers share the same network namespace (localhost)
+# and can share volumes. The sidecar watches nginx logs.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: multi-container
+  namespace: playground
+  labels:
+    app: multi-container-demo
+spec:
+  containers:
+  # Main container: serves HTTP
+  - name: nginx
+    image: nginx:alpine
+    ports:
+    - containerPort: 80
+
+  # Sidecar container: represents a log-watcher pattern
+  # Keeps running so the pod stays Ready.
+  - name: log-watcher
+    image: busybox
+    command: ["sh", "-c", "echo 'Log watcher ready (watching /var/log/nginx/access.log)'; sleep 3600"]
+
+  # Debug helper: explore the pod from this container
+  - name: debugger
+    image: busybox
+    command: ["sh", "-c", "echo 'Debugger ready — try: wget -qO- http://localhost:80'; sleep 3600"]
