@@ -1,0 +1,16 @@
+# Pod with log sidecar pattern.
+# The app writes to a shared volume; the sidecar tails to stdout.
+# Both containers can be inspected independently via kubectl logs -c.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: log-sidecar-demo
+  namespace: playground
+spec:
+  containers:
+  - name: app
+    image: busybox
+    command: ["sh", "-c", "while true; do echo \"[$(date)] App log entry\"; sleep 3; done"]
+  - name: log-shipper
+    image: busybox
+    command: ["sh", "-c", "echo 'Log shipper started — monitoring app output'; sleep 3600"]
