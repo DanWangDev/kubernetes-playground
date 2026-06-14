@@ -1,0 +1,21 @@
+# Pod with liveness probe: creates a file, then removes it after 30s.
+# The liveness probe checks for the file. When it disappears, the probe
+# fails and Kubernetes restarts the container.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: liveness-demo
+  namespace: playground
+  labels:
+    app: liveness-demo
+spec:
+  containers:
+  - name: app
+    image: busybox
+    command: ["sh", "-c", "touch /tmp/healthy; sleep 30; rm /tmp/healthy; sleep 3600"]
+    livenessProbe:
+      exec:
+        command: ["cat", "/tmp/healthy"]
+      initialDelaySeconds: 5
+      periodSeconds: 5
+      failureThreshold: 2

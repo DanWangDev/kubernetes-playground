@@ -1,0 +1,22 @@
+# Pod with requests < limits (Burstable QoS).
+# Can burst above its request when resources are available.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: burstable-pod
+  namespace: playground
+  labels:
+    app: burstable
+spec:
+  containers:
+  - name: nginx
+    image: nginx:alpine
+    ports:
+    - containerPort: 80
+    resources:
+      requests:
+        cpu: 50m
+        memory: 64Mi
+      limits:
+        cpu: 200m
+        memory: 256Mi
