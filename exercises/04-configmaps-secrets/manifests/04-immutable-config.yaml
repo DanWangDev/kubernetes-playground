@@ -1,0 +1,11 @@
+# Immutable ConfigMap: cannot be changed after creation.
+# Protects against accidental edits. To update, delete and recreate with a new name.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-config-immutable
+  namespace: playground
+immutable: true
+data:
+  VERSION: "2.0.0"
+  DEPLOY_DATE: "2026-01-01"

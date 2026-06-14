@@ -1,0 +1,46 @@
+# Pod demonstrating all three config injection patterns:
+# 1. Single env var from ConfigMap (valueFrom)
+# 2. All env vars from ConfigMap (envFrom)
+# 3. All env vars from Secret (envFrom)
+# 4. ConfigMap mounted as a volume
+apiVersion: v1
+kind: Pod
+metadata:
+  name: config-demo
+  namespace: playground
+  labels:
+    app: config-demo
+spec:
+  containers:
+  - name: demo
+    image: busybox
+    command: ["sh", "-c", "echo '=== Single env ==='; echo LOG_LEVEL=$LOG_LEVEL; echo APP_ENV=$APP_ENV; echo '=== Secret envs ==='; echo DB_PASSWORD=$DB_PASSWORD; echo '=== Volume files ==='; ls /etc/app/; cat /etc/app/config.yaml; echo '=== Done ==='; sleep 3600"]
+    env:
+    # Pattern 1: single key from ConfigMap
+    - name: LOG_LEVEL
+      valueFrom:
+        configMapKeyRef:
+          name: app-config
+          key: LOG_LEVEL
+    # Pattern 1: single key from Secret
+    - name: DB_PASSWORD
+      valueFrom:
+        secretKeyRef:
+          name: app-secret
+          key: DB_PASSWORD
+    # Pattern 2: all keys from ConfigMap as env vars
+    envFrom:
+    - configMapRef:
+        name: app-config
+    # Pattern 2: all keys from Secret as env vars
+    - secretRef:
+        name: app-secret
+    volumeMounts:
+    # Pattern 3: ConfigMap mounted as files
+    - name: app-config-files
+      mountPath: /etc/app
+      readOnly: true
+  volumes:
+  - name: app-config-files
+    configMap:
+      name: app-files
