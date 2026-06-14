@@ -1,0 +1,22 @@
+# CronJob that runs every minute — great for learning.
+# In production, use a more reasonable schedule.
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: every-minute
+  namespace: playground
+spec:
+  schedule: "* * * * *"
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 2
+  failedJobsHistoryLimit: 1
+  jobTemplate:
+    spec:
+      ttlSecondsAfterFinished: 30
+      template:
+        spec:
+          containers:
+          - name: tick
+            image: busybox
+            command: ["sh", "-c", "date; echo 'CronJob tick!'"]
+          restartPolicy: Never

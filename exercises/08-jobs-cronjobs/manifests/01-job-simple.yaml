@@ -1,0 +1,16 @@
+# Simple one-shot Job: runs once and completes.
+# After completion, the pod remains for log inspection.
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: hello-job
+  namespace: playground
+spec:
+  ttlSecondsAfterFinished: 60
+  template:
+    spec:
+      containers:
+      - name: hello
+        image: busybox
+        command: ["sh", "-c", "echo 'Job started!'; sleep 2; echo 'Job complete!'"]
+      restartPolicy: Never
