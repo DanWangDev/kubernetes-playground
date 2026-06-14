@@ -118,11 +118,13 @@ func Logs(name string, container string, flags ...string) (string, error) {
 }
 
 // Exec runs a command inside a pod container and returns stdout.
-func Exec(name string, command []string, container string) (string, error) {
+// Extra flags (e.g., "-n", "playground") are passed through to kubectl.
+func Exec(name string, command []string, container string, flags ...string) (string, error) {
 	args := []string{"exec", name}
 	if container != "" {
 		args = append(args, "-c", container)
 	}
+	args = append(args, flags...)
 	args = append(args, "--")
 	args = append(args, command...)
 	return run(args...)

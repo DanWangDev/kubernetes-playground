@@ -1,0 +1,7 @@
+# Creates the playground namespace for all exercises.
+# Namespaces isolate resources — like folders in a filesystem.
+# All subsequent modules will use this namespace.
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: playground

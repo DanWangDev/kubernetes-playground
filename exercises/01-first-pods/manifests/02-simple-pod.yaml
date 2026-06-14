@@ -1,0 +1,15 @@
+# The simplest possible Pod — a single nginx container.
+# This is the "hello world" of Kubernetes.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx
+  namespace: playground
+  labels:
+    app: nginx
+spec:
+  containers:
+  - name: nginx
+    image: nginx:alpine
+    ports:
+    - containerPort: 80

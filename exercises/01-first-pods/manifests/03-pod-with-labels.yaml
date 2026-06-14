@@ -1,0 +1,19 @@
+# Pod with descriptive labels.
+# Labels are key-value pairs used for organization and selection.
+# They're how Services, Deployments, and other controllers find their pods.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-labeled
+  namespace: playground
+  labels:
+    app: web
+    environment: dev
+    tier: frontend
+    version: "1.0"
+spec:
+  containers:
+  - name: nginx
+    image: nginx:alpine
+    ports:
+    - containerPort: 80
