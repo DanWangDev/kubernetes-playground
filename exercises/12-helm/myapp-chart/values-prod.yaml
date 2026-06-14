@@ -1,0 +1,19 @@
+# Production overrides.
+replicaCount: 5
+
+resources:
+  requests:
+    cpu: 200m
+    memory: 256Mi
+  limits:
+    cpu: 500m
+    memory: 512Mi
+
+autoscaling:
+  enabled: true
+  minReplicas: 3
+  maxReplicas: 10
+
+config:
+  APP_ENV: production
+  LOG_LEVEL: warn
