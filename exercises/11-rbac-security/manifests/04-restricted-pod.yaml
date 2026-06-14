@@ -1,0 +1,21 @@
+# Pod with restrictive SecurityContext: non-root, read-only filesystem, dropped capabilities.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: secure-pod
+  namespace: playground
+spec:
+  serviceAccountName: app-sa
+  securityContext:
+    runAsNonRoot: true
+    runAsUser: 1000
+  containers:
+  - name: app
+    image: nginx:alpine
+    securityContext:
+      allowPrivilegeEscalation: false
+      capabilities:
+        drop: ["ALL"]
+      readOnlyRootFilesystem: false
+    ports:
+    - containerPort: 80
