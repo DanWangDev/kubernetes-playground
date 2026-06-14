@@ -1,0 +1,17 @@
+# Pod with toleration for a tainted node.
+# Demonstrates the pattern: a node is tainted with "gpu=true:NoSchedule"
+# and only pods with this toleration can be scheduled there.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: gpu-pod
+  namespace: playground
+spec:
+  tolerations:
+  - key: gpu
+    operator: Equal
+    value: "true"
+    effect: NoSchedule
+  containers:
+  - name: nginx
+    image: nginx:alpine

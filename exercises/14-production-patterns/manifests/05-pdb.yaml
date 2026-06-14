@@ -1,0 +1,13 @@
+# Pod Disruption Budget: ensures at least 1 pod is always available.
+# During voluntary disruptions (node drains, upgrades), Kubernetes
+# respects this minimum.
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: web-spread-pdb
+  namespace: playground
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app: web-spread

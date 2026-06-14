@@ -1,0 +1,27 @@
+# Deployment with topology spread constraints.
+# Ensures pods are evenly distributed across zones (maxSkew: 1).
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-topology
+  namespace: playground
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: web-topology
+  template:
+    metadata:
+      labels:
+        app: web-topology
+    spec:
+      topologySpreadConstraints:
+      - maxSkew: 1
+        topologyKey: topology.kubernetes.io/zone
+        whenUnsatisfiable: ScheduleAnyway
+        labelSelector:
+          matchLabels:
+            app: web-topology
+      containers:
+      - name: nginx
+        image: nginx:alpine
