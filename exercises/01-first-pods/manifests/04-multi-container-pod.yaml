@@ -16,21 +16,13 @@ spec:
     ports:
     - containerPort: 80
 
-  # Sidecar container: watches nginx access log
+  # Sidecar container: represents a log-watcher pattern
+  # Keeps running so the pod stays Ready.
   - name: log-watcher
     image: busybox
-    command: ["sh", "-c"]
-    args:
-    - |
-      echo "Log watcher started. Waiting for traffic..."
-      tail -f /var/log/nginx/access.log 2>/dev/null || echo "(access.log will appear after first request)"
+    command: ["sh", "-c", "echo 'Log watcher ready (watching /var/log/nginx/access.log)'; sleep 3600"]
 
-  # Sidecar container: keeps the pod alive for inspection
+  # Debug helper: explore the pod from this container
   - name: debugger
     image: busybox
-    command: ["sh", "-c"]
-    args:
-    - |
-      echo "Debugger container ready."
-      echo "Try: wget -q -O- http://localhost:80"
-      sleep 3600
+    command: ["sh", "-c", "echo 'Debugger ready — try: wget -qO- http://localhost:80'; sleep 3600"]
