@@ -1,0 +1,24 @@
+# TLS Ingress: terminates HTTPS with a self-signed certificate.
+# The certificate must be created first (see exercise).
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-tls
+  namespace: playground
+spec:
+  ingressClassName: nginx
+  tls:
+  - hosts:
+    - playground.local
+    secretName: playground-tls
+  rules:
+  - host: playground.local
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: web-svc
+            port:
+              number: 80
