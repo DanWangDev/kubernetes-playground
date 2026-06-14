@@ -18,7 +18,7 @@ import (
 )
 
 // DefaultTimeout is the default wait timeout for operations like WaitForPodReady.
-const DefaultTimeout = 120 * time.Second
+const DefaultTimeout = 90 * time.Second
 
 // run executes a kubectl command and returns stdout or an error with stderr.
 func run(args ...string) (string, error) {

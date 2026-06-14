@@ -1,0 +1,18 @@
+# Static PersistentVolume using hostPath.
+# On kind, hostPath points to the node's (Docker container's) filesystem.
+# The PV is cluster-scoped (no namespace).
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-hostpath
+  labels:
+    type: local
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  hostPath:
+    path: /tmp/playground-pv
+    type: DirectoryOrCreate

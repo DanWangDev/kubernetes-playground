@@ -1,0 +1,19 @@
+# Pod consuming the PVC as a volume.
+# Writes a timestamp file to prove data persistence.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: storage-writer
+  namespace: playground
+spec:
+  containers:
+  - name: writer
+    image: busybox
+    command: ["sh", "-c", "date > /data/timestamp.txt; echo 'Written: '; cat /data/timestamp.txt; sleep 3600"]
+    volumeMounts:
+    - name: data
+      mountPath: /data
+  volumes:
+  - name: data
+    persistentVolumeClaim:
+      claimName: pvc-claim
