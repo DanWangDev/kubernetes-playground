@@ -1,0 +1,17 @@
+# Job with backoffLimit: fails the first few times, then succeeds.
+# Demonstrates retry behavior with exponential backoff.
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: backoff-job
+  namespace: playground
+spec:
+  backoffLimit: 4
+  ttlSecondsAfterFinished: 60
+  template:
+    spec:
+      containers:
+      - name: worker
+        image: busybox
+        command: ["sh", "-c", "echo 'This will fail!'; exit 1"]
+      restartPolicy: Never
