@@ -1,0 +1,12 @@
+# ConfigMap for environment variable injection.
+# This stores non-sensitive app configuration.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-config
+  namespace: playground
+data:
+  APP_ENV: staging
+  LOG_LEVEL: debug
+  API_URL: https://api.staging.example.com
+  MAX_CONNECTIONS: "100"

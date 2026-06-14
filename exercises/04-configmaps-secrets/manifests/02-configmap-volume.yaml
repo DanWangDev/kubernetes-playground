@@ -1,0 +1,20 @@
+# ConfigMap mounted as files in a pod.
+# Each key becomes a file: /etc/app/config.yaml, /etc/app/features.json
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-files
+  namespace: playground
+data:
+  config.yaml: |
+    server:
+      port: 8080
+      host: 0.0.0.0
+    database:
+      host: db.internal
+      port: 5432
+  features.json: |
+    {
+      "newDashboard": true,
+      "betaSearch": false
+    }
