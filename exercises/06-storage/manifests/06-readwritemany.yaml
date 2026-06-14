@@ -1,0 +1,18 @@
+# RWX demo: two pods sharing the same volume.
+# Both pods mount the same PVC at /shared.
+# NOTE: RWX requires a provisioner that supports it (NFS, Ceph, etc.).
+# hostPath and kind's local-path only support RWO.
+# This manifest demonstrates the pattern — it won't work on kind
+# unless you install an RWX-capable CSI driver.
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc-shared
+  namespace: playground
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 100Mi
+  storageClassName: ""  # Empty = use no StorageClass (static binding)

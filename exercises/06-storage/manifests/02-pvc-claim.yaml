@@ -1,0 +1,14 @@
+# PVC requesting 500Mi of RWO storage.
+# Will bind to the smallest matching PV (pv-hostpath, 1Gi).
+# Namespaced — must be in the same namespace as the Pod.
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc-claim
+  namespace: playground
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 500Mi

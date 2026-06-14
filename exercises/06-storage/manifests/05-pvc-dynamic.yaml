@@ -1,0 +1,14 @@
+# PVC using dynamic provisioning via StorageClass.
+# No PV needs to exist beforehand — the StorageClass creates one.
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc-dynamic
+  namespace: playground
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 200Mi
+  storageClassName: playground-local

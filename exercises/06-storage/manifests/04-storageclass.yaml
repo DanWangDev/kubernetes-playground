@@ -1,0 +1,10 @@
+# Custom StorageClass for kind's local-path provisioner.
+# Dynamic provisioning: PVCs referencing this StorageClass
+# will auto-create PVs (no pre-provisioning needed).
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: playground-local
+provisioner: rancher.io/local-path
+reclaimPolicy: Delete
+volumeBindingMode: WaitForFirstConsumer
