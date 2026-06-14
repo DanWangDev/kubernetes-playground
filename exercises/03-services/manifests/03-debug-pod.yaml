@@ -1,0 +1,14 @@
+# Debug pod: a busybox container with curl for testing internal connectivity.
+# Use this to test DNS, curl services, and inspect the cluster from inside.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: debug
+  namespace: playground
+  labels:
+    app: debug
+spec:
+  containers:
+  - name: debug
+    image: busybox
+    command: ["sh", "-c", "echo 'Debug pod ready. Use: kubectl exec debug -n playground -- <cmd>'; sleep 3600"]

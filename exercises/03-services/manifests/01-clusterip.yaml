@@ -1,0 +1,14 @@
+# ClusterIP Service: internal load balancer for nginx pods.
+# Accessible as "nginx-svc" from any pod in the playground namespace.
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-svc
+  namespace: playground
+spec:
+  type: ClusterIP
+  selector:
+    app: nginx-svc-demo
+  ports:
+  - port: 80
+    targetPort: 80
