@@ -1,0 +1,21 @@
+# Basic Ingress: routes everything to the web service.
+# After applying, access via: curl http://localhost/ (on kind)
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-basic
+  namespace: playground
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  ingressClassName: nginx
+  rules:
+  - http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: web-svc
+            port:
+              number: 80
