@@ -1,0 +1,9 @@
+# PriorityClass: high-priority pods can preempt lower-priority ones.
+# Higher value = higher priority. Maximum: 1,000,000,000.
+apiVersion: scheduling.k8s.io/v1
+kind: PriorityClass
+metadata:
+  name: high-priority
+value: 1000
+globalDefault: false
+description: "High priority for critical workloads."

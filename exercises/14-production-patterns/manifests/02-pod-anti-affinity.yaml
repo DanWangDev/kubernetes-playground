@@ -1,0 +1,29 @@
+# Deployment with pod anti-affinity: spread pods across nodes.
+# Uses preferred (soft) anti-affinity so it works on single-node kind.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-spread
+  namespace: playground
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: web-spread
+  template:
+    metadata:
+      labels:
+        app: web-spread
+    spec:
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              labelSelector:
+                matchLabels:
+                  app: web-spread
+              topologyKey: kubernetes.io/hostname
+      containers:
+      - name: nginx
+        image: nginx:alpine

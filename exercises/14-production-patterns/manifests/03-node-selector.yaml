@@ -1,0 +1,14 @@
+# Pod with nodeSelector: requests a node with specific label.
+# On kind, no node has this label, so the pod stays Pending.
+# This demonstrates the pattern: label a node, then schedule.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: ssd-pod
+  namespace: playground
+spec:
+  nodeSelector:
+    disktype: ssd
+  containers:
+  - name: nginx
+    image: nginx:alpine
