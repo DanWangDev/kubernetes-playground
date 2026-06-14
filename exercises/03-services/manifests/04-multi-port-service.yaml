@@ -1,0 +1,18 @@
+# Multi-port Service: exposes both HTTP and a metrics port.
+# Named ports make the intent clear and enable port remapping.
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-multi
+  namespace: playground
+spec:
+  type: ClusterIP
+  selector:
+    app: nginx-svc-demo
+  ports:
+  - name: http
+    port: 80
+    targetPort: 80
+  - name: https
+    port: 443
+    targetPort: 80       # Maps 443 → 80 (no real TLS, just demonstrates port remapping)
