@@ -1,0 +1,28 @@
+# Pod with startup probe: simulates a slow-starting application.
+# The startup probe runs for up to 60 seconds. Liveness and readiness
+# are disabled until the startup probe succeeds.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: slow-start
+  namespace: playground
+  labels:
+    app: slow-start
+spec:
+  containers:
+  - name: app
+    image: busybox
+    command: ["sh", "-c", "echo 'Starting up...'; sleep 10; echo 'Ready!'; touch /tmp/started; sleep 3600"]
+    startupProbe:
+      exec:
+        command: ["cat", "/tmp/started"]
+      failureThreshold: 12
+      periodSeconds: 5
+    livenessProbe:
+      exec:
+        command: ["cat", "/tmp/started"]
+      periodSeconds: 10
+    readinessProbe:
+      exec:
+        command: ["cat", "/tmp/started"]
+      periodSeconds: 5

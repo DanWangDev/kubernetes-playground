@@ -1,0 +1,22 @@
+# Pod with resource requests and limits (Guaranteed QoS: requests = limits).
+# This pod will never be evicted before Burstable or BestEffort pods.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: guaranteed-pod
+  namespace: playground
+  labels:
+    app: guaranteed
+spec:
+  containers:
+  - name: nginx
+    image: nginx:alpine
+    ports:
+    - containerPort: 80
+    resources:
+      requests:
+        cpu: 100m
+        memory: 128Mi
+      limits:
+        cpu: 100m
+        memory: 128Mi

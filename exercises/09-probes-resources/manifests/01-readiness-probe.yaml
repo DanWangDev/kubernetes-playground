@@ -1,0 +1,21 @@
+# Pod with readiness probe: nginx with an HTTP health check.
+# The pod won't receive traffic until / returns 200.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-ready
+  namespace: playground
+  labels:
+    app: nginx-ready
+spec:
+  containers:
+  - name: nginx
+    image: nginx:alpine
+    ports:
+    - containerPort: 80
+    readinessProbe:
+      httpGet:
+        path: /
+        port: 80
+      initialDelaySeconds: 3
+      periodSeconds: 5
